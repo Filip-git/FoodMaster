@@ -1,6 +1,9 @@
+import AboutFoodMaster from '../components/AboutFoodMaster';
+
+
 const About = () => {
   return (
-    <div>About</div>
+    <div> <AboutFoodMaster /> </div>
   )
 }
 
