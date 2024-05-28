@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const AboutFoodMaster = () => {
   return (
@@ -26,9 +27,10 @@ const AboutFoodMaster = () => {
       <div className="mt-12 animate-fade-in">
         <h2 className="text-2xl font-bold mb-4">Join FoodMaster Today!</h2>
         <p className="text-lg mb-6">Sign up now to start discovering, sharing, and connecting with the world of culinary delights.</p>
+        <Link to="/recipes">
         <button className="px-6 py-3 bg-orange-500 text-white font-semibold rounded-md shadow-md hover:bg-orange-600 hover:shadow-lg transform hover:-translate-y-1 transition">
           Get Started
-        </button>
+        </button></Link>
       </div>
     </div>
   );
