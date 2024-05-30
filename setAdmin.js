@@ -7,7 +7,7 @@ admin.initializeApp({
 
 const auth = admin.auth();
 
-const uid = 'svzsUSB4dxNTA23eULPRvxNkdnn2'; 
+const uid = 'dSbFF2d0vYVDeL6u7lsQY6c6GwC2';
 
 auth.setCustomUserClaims(uid, { admin: true })
   .then(() => {
