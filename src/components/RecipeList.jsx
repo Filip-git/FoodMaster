@@ -56,16 +56,31 @@ const RecipeList = () => {
                 <span className="text-gray-400">No photo available</span>
               )}
             </div>
-            <div className="p-6">
-              <h2 className="text-xl font-semibold mb-2">{recipe.title}</h2>
-              <h3 className="text-lg font-medium mb-2">Ingredients:</h3>
-              <p className="text-gray-700 mb-4">{recipe.ingredients}</p>
-              <h3 className="text-lg font-medium mb-2">Instructions:</h3>
-              <p className="text-gray-700">{recipe.instructions}</p>
-              <h3 className="text-lg font-medium mb-2">Category:</h3>
-              <p className="text-gray-700">{recipe.category}</p>
-              <p className="italic mt-1">by {recipe.createdBy}</p>
-            </div>
+            <div className="p-8 max-w-lg mx-auto bg-white shadow-md rounded-lg">
+  <h2 className="text-2xl font-bold mb-4 text-gray-800 border-b pb-2">{recipe.title}</h2>
+  
+  <div className="mb-6">
+    <h3 className="text-xl font-semibold mb-2 text-gray-700">Ingredients:</h3>
+    <ul className="list-disc list-inside space-y-1 text-gray-600">
+      {recipe.ingredients.split('\n').map((ingredient, index) => (
+        <li key={index}>{ingredient}</li>
+      ))}
+    </ul>
+  </div>
+  
+  <div className="mb-6">
+    <h3 className="text-xl font-semibold mb-2 text-gray-700">Instructions:</h3>
+    <p className="text-gray-600">{recipe.instructions}</p>
+  </div>
+  
+  <div className="mb-6">
+    <h3 className="text-xl font-semibold mb-2 text-gray-700">Category:</h3>
+    <p className="text-gray-600">{recipe.category}</p>
+  </div>
+  
+  <p className="italic text-gray-500 text-right">by {recipe.createdBy}</p>
+</div>
+
           </div>
         ))}
       </div>
