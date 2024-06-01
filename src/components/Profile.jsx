@@ -216,7 +216,7 @@ const Profile = () => {
                 <button
                   type="button"
                   onClick={() => setEditRecipe(null)}
-                  className="px-4 py-2 bg-gray-600 text-white rounded-md"
+                  className="px-4 py-2 ml-2 bg-gray-600 text-white rounded-md"
                 >
                   Cancel
                 </button>
