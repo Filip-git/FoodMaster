@@ -4,18 +4,17 @@ import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDt93Neo4zMnYOVql77kTyR49WYCqyMFfE",
-    authDomain: "foodmaster-1cbb6.firebaseapp.com",
-    projectId: "foodmaster-1cbb6",
-    storageBucket: "foodmaster-1cbb6.appspot.com",
-    messagingSenderId: "309998506044",
-    appId: "1:309998506044:web:2426c75a08d90913837339"
-  };
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+};
 
-  const app = initializeApp(firebaseConfig);
-  const firestore = getFirestore(app);
-  const auth = getAuth(app);
-  const storage = getStorage(app);
-  
-  export { firestore, auth, storage };
-  
+const app = initializeApp(firebaseConfig);
+const firestore = getFirestore(app);
+const auth = getAuth(app);
+const storage = getStorage(app);
+
+export { firestore, auth, storage };
