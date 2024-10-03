@@ -12,6 +12,7 @@ import About from './pages/About';
 import AdminPanel from './pages/AdminPanel';
 import Settings from './pages/Settings';
 import SavedRecipes from './pages/SavedRecipes';
+import PageMissing from './pages/PageMissing';
 
 
 const App = () => {
@@ -25,11 +26,13 @@ const App = () => {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/recipes" element={<Recipes />} />
           <Route path="/about" element={<About />} />
+          <Route path="/ooops" element={<PageMissing />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/saved-recipes" element={<SavedRecipes />} />
           <Route path="/profile" element={<PrivateRoute><MyProfile /></PrivateRoute>} />
           <Route path="/add-recipe" element={<PrivateRoute><AddRecipe /></PrivateRoute>} />
           <Route path="/admin-panel" element={<PrivateRoute><AdminPanel /></PrivateRoute>} />
+          
         </Routes>
         <Footer />
       </div>
