@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { getFirestore, collection, query, where, getDocs, doc, deleteDoc, updateDoc, increment, getDoc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
-import Slider from 'react-slick'; // Make sure to install react-slick and slick-carousel
+import Slider from 'react-slick';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
@@ -17,6 +19,8 @@ const Profile = () => {
   });
   const firestore = getFirestore();
   const auth = getAuth();
+  const notifySuccess = (message) => toast.success(message);
+  const notifyError = (message) => toast.error(message);
 
   const sliderSettings = {
     dots: true,
@@ -58,11 +62,13 @@ const Profile = () => {
           recipeCount: increment(-1)
         });
         console.log(`Decremented recipe count for user: ${user.uid}`);
+        notifySuccess('Recipe deleted successfully');
 
         // Update the local state to remove the deleted recipe
         setRecipes(recipes.filter(recipe => recipe.id !== id));
       } catch (error) {
         console.error('Error deleting recipe:', error);
+        notifyError('Error deleting recipe');
       }
     }
   };
@@ -118,7 +124,7 @@ const Profile = () => {
 
         // Update the recipe in the user's subcollection
         await updateDoc(userRecipeRef, updatedRecipeData);
-        console.log('User subcollection recipe updated successfully');
+        notifySuccess('Recipe updated successfully');
 
         // Update the local state
         setRecipes(recipes.map(recipe =>
@@ -129,12 +135,13 @@ const Profile = () => {
 
         setEditRecipe(null);
       } catch (error) {
-        console.error('Error updating recipe:', error);
+        notifyError('Error updating recipe');
       }
     }
   };
 
   return (
+    <>
     <div className="profile">
       <h1 className="text-3xl mb-4">My profile - <span className="italic">{username}</span></h1>
       {recipes.map(recipe => (
@@ -250,6 +257,8 @@ const Profile = () => {
         </div>
       ))}
     </div>
+      <ToastContainer />
+    </>
   );
 };
 

@@ -3,6 +3,8 @@ import { addDoc, collection, doc, updateDoc, arrayUnion, getDoc, setDoc } from '
 import { getAuth } from 'firebase/auth';
 import { firestore, storage } from '../utils/firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const RecipeForm = () => {
   const [title, setTitle] = useState('');
@@ -12,6 +14,8 @@ const RecipeForm = () => {
   const [category, setCategory] = useState('Desserts');
   const [photos, setPhotos] = useState([]);
   const [user, setUser] = useState(null);
+  const notifySuccess = () => toast.success('Recipe added successfully!');
+  const notifyError = (message) => toast.error(`Error: ${message}`);
 
   const categories = ['Desserts', 'BBQ', 'Breakfast', 'Lunch', 'Dinner', 'Vegetarian', 'Fitness'];
 
@@ -29,7 +33,7 @@ const RecipeForm = () => {
 
   const handlePhotoChange = (e) => {
     if (e.target.files.length > 5) {
-      alert('You can only upload up to 5 photos.');
+      notifyError('You can only upload up to 5 photos.');
       return;
     }
     setPhotos(Array.from(e.target.files));
@@ -42,7 +46,7 @@ const RecipeForm = () => {
       const downloadURL = await getDownloadURL(snapshot.ref);
       return downloadURL;
     } catch (error) {
-      console.error('Error uploading photo:', error);
+      notifyError('Error uploading photo');
       throw error;
     }
   };
@@ -52,13 +56,13 @@ const RecipeForm = () => {
     e.preventDefault();
 
     if (!user) {
-      console.error('User not authenticated');
+      notifyError('User not authenticated');
       return;
     }
 
     // Check if all required fields are filled
     if (!title.trim() || !ingredients.trim() || !instructions.trim() || !category.trim()) {
-      alert('Please fill in all required fields.');
+      notifyError('User not authenticated');
       return;
     }
 
@@ -94,22 +98,28 @@ const RecipeForm = () => {
         recipeCount: newRecipeCount,
       });
 
-      console.log('Recipe written with ID: ', docRef.id);
-
+      
+      
       await setDoc(doc(firestore, `users/${user.uid}/recipes`, docRef.id), recipeData);
+
+      console.log('Recipe written with ID: ', docRef.id);
+      notifySuccess();
 
       setTitle('');
       setIngredients('');
       setInstructions('');
       setCategory('Desserts');
       setPhotos([]);
+
+
     } catch (e) {
-      console.error('Error adding document: ', e);
+      notifyError('Error adding recipe');
     }
   };
 
 
   return (
+    <>
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label htmlFor="title" className="block text-sm font-medium text-gray-700">
@@ -183,6 +193,8 @@ const RecipeForm = () => {
         Add Recipe
       </button>
     </form>
+          <ToastContainer />
+</>
   );
 };
 

@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { getFirestore, collection, getDocs, getDoc, updateDoc, deleteDoc, doc, increment } from 'firebase/firestore';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import UserList from '../components/UserList';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AdminPanel = () => {
   const [recipes, setRecipes] = useState([]);
@@ -49,46 +51,43 @@ const AdminPanel = () => {
       // Fetch the recipe document
       const recipeDoc = await getDoc(doc(firestore, 'recipes', id));
       if (recipeDoc.exists()) {
-        // Log the recipe document data to identify the user ID field
-        console.log('Recipe document data:', recipeDoc.data());
-  
         // Get the user ID associated with the recipe
         const userId = recipeDoc.data().createdByUid;
         if (userId) {
           // Delete the recipe from the global recipes collection
           await deleteDoc(doc(firestore, 'recipes', id));
-          console.log(`Deleted from global recipes collection: ${id}`);
   
           // Delete the recipe from the user's subcollection
           await deleteDoc(doc(firestore, `users/${userId}/recipes`, id));
-          console.log(`Deleted from user's subcollection: ${id}`);
   
           // Decrement the recipeCount in the user's document
           const userDocRef = doc(firestore, 'users', userId);
           await updateDoc(userDocRef, {
             recipeCount: increment(-1)
           });
-          console.log(`Decremented recipe count for user: ${userId}`);
-  
+
           // Update the local state to remove the deleted recipe
           setRecipes(recipes.filter(recipe => recipe.id !== id));
+
+          // Show success toast
+          toast.success('Recipe deleted successfully!');
         } else {
           console.error(`No user ID found for recipe: ${id}`);
+          toast.error('Failed to delete recipe. No user ID found.');
         }
       } else {
         console.error(`Recipe document not found: ${id}`);
+        toast.error('Recipe not found.');
       }
     } catch (error) {
       console.error('Error deleting recipe:', error);
+      toast.error('Error deleting recipe.');
     }
   };
-  
-  
-  
-  
 
   return (
     <div className="admin-panel p-6 bg-gray-100 min-h-screen">
+      <ToastContainer />
       <h1 className="text-4xl font-bold mb-8 text-center">Admin Panel</h1>
       <div className="mb-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {recipes.map((recipe) => (
